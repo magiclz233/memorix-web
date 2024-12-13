@@ -1,28 +1,34 @@
 import axios from 'axios'
-import type { Media, Album } from '@/types'
+import type { Media } from '@/types'
 
 const api = axios.create({
-  baseURL: '/api'
+  baseURL: 'http://localhost:8080/api'
 })
 
 export const mediaApi = {
-  async getList(params?: { type?: string; date?: string; location?: string }) {
-    const { data } = await api.get<Media[]>('/media', { params })
+  async scanMedia() {
+    const { data } = await api.get<Media[]>('/media/scan')
     return data
   },
 
-  async getById(id: number) {
-    const { data } = await api.get<Media>(`/media/${id}`)
+  async getMediaUrl(filename: string) {
+    return `/api/media/${encodeURIComponent(filename)}`
+  }
+}
+
+export const configApi = {
+  async getMediaPaths() {
+    const { data } = await api.get('/config/media-paths')
     return data
   },
 
-  async getAlbums() {
-    const { data } = await api.get<Album[]>('/albums')
+  async addMediaPath(path: { name: string; path: string }) {
+    const { data } = await api.post('/config/media-paths', path)
     return data
   },
 
-  async createAlbum(album: Partial<Album>) {
-    const { data } = await api.post<Album>('/albums', album)
+  async deleteMediaPath(id: number) {
+    const { data } = await api.delete(`/config/media-paths/${id}`)
     return data
   }
 } 

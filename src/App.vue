@@ -1,9 +1,18 @@
 <template>
   <router-view />
+  <v-snackbar
+    v-model="snackbar.show"
+    :color="snackbar.color"
+    timeout="3000"
+  >
+    {{ snackbar.text }}
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
-// 空的 setup 块
+import { useSnackbar } from '@/composables/useSnackbar'
+
+const { snackbar } = useSnackbar()
 </script>
 
 <style>

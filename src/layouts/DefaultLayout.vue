@@ -40,7 +40,8 @@ const menuItems = [
   { title: '首页', path: '/', icon: 'mdi-home' },
   { title: '相册', path: '/gallery', icon: 'mdi-image-multiple' },
   { title: '时间线', path: '/timeline', icon: 'mdi-timeline' },
-  { title: '地图', path: '/map', icon: 'mdi-map' }
+  { title: '地图', path: '/map', icon: 'mdi-map' },
+  { title: '设置', path: '/settings', icon: 'mdi-cog' }
 ]
 </script>
 
