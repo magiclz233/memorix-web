@@ -1,15 +1,21 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Outlet, redirect } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 export const Route = createRootRoute({
   component: () => (
     <>
-        <div className='flex gap-2'>
-            <Link to="/front/topic">话题</Link>
-            <Link to="/front/live">直播</Link>
-        </div>
         <Outlet />
       <TanStackRouterDevtools />
     </>
   ),
+  // 添加根路径的重定向
+  beforeLoad: () => {
+    // 只有当用户访问根路径时才重定向
+    if (window.location.pathname === '/') {
+      throw redirect({
+        to: '/front/photo',
+        replace: true
+      })
+    }
+  }
 })

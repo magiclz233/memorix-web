@@ -13,7 +13,9 @@
 import { Route as rootRoute } from './pages/__root'
 import { Route as FrontRouteImport } from './pages/front/route'
 import { Route as FrontTopicImport } from './pages/front/topic'
+import { Route as FrontPhotoImport } from './pages/front/photo'
 import { Route as FrontLiveImport } from './pages/front/live'
+import { Route as FrontAllPhotoImport } from './pages/front/all-photo'
 
 // Create/Update Routes
 
@@ -29,9 +31,21 @@ const FrontTopicRoute = FrontTopicImport.update({
   getParentRoute: () => FrontRouteRoute,
 } as any)
 
+const FrontPhotoRoute = FrontPhotoImport.update({
+  id: '/photo',
+  path: '/photo',
+  getParentRoute: () => FrontRouteRoute,
+} as any)
+
 const FrontLiveRoute = FrontLiveImport.update({
   id: '/live',
   path: '/live',
+  getParentRoute: () => FrontRouteRoute,
+} as any)
+
+const FrontAllPhotoRoute = FrontAllPhotoImport.update({
+  id: '/all-photo',
+  path: '/all-photo',
   getParentRoute: () => FrontRouteRoute,
 } as any)
 
@@ -46,11 +60,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FrontRouteImport
       parentRoute: typeof rootRoute
     }
+    '/front/all-photo': {
+      id: '/front/all-photo'
+      path: '/all-photo'
+      fullPath: '/front/all-photo'
+      preLoaderRoute: typeof FrontAllPhotoImport
+      parentRoute: typeof FrontRouteImport
+    }
     '/front/live': {
       id: '/front/live'
       path: '/live'
       fullPath: '/front/live'
       preLoaderRoute: typeof FrontLiveImport
+      parentRoute: typeof FrontRouteImport
+    }
+    '/front/photo': {
+      id: '/front/photo'
+      path: '/photo'
+      fullPath: '/front/photo'
+      preLoaderRoute: typeof FrontPhotoImport
       parentRoute: typeof FrontRouteImport
     }
     '/front/topic': {
@@ -66,12 +94,16 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface FrontRouteRouteChildren {
+  FrontAllPhotoRoute: typeof FrontAllPhotoRoute
   FrontLiveRoute: typeof FrontLiveRoute
+  FrontPhotoRoute: typeof FrontPhotoRoute
   FrontTopicRoute: typeof FrontTopicRoute
 }
 
 const FrontRouteRouteChildren: FrontRouteRouteChildren = {
+  FrontAllPhotoRoute: FrontAllPhotoRoute,
   FrontLiveRoute: FrontLiveRoute,
+  FrontPhotoRoute: FrontPhotoRoute,
   FrontTopicRoute: FrontTopicRoute,
 }
 
@@ -81,29 +113,51 @@ const FrontRouteRouteWithChildren = FrontRouteRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/front': typeof FrontRouteRouteWithChildren
+  '/front/all-photo': typeof FrontAllPhotoRoute
   '/front/live': typeof FrontLiveRoute
+  '/front/photo': typeof FrontPhotoRoute
   '/front/topic': typeof FrontTopicRoute
 }
 
 export interface FileRoutesByTo {
   '/front': typeof FrontRouteRouteWithChildren
+  '/front/all-photo': typeof FrontAllPhotoRoute
   '/front/live': typeof FrontLiveRoute
+  '/front/photo': typeof FrontPhotoRoute
   '/front/topic': typeof FrontTopicRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/front': typeof FrontRouteRouteWithChildren
+  '/front/all-photo': typeof FrontAllPhotoRoute
   '/front/live': typeof FrontLiveRoute
+  '/front/photo': typeof FrontPhotoRoute
   '/front/topic': typeof FrontTopicRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/front' | '/front/live' | '/front/topic'
+  fullPaths:
+    | '/front'
+    | '/front/all-photo'
+    | '/front/live'
+    | '/front/photo'
+    | '/front/topic'
   fileRoutesByTo: FileRoutesByTo
-  to: '/front' | '/front/live' | '/front/topic'
-  id: '__root__' | '/front' | '/front/live' | '/front/topic'
+  to:
+    | '/front'
+    | '/front/all-photo'
+    | '/front/live'
+    | '/front/photo'
+    | '/front/topic'
+  id:
+    | '__root__'
+    | '/front'
+    | '/front/all-photo'
+    | '/front/live'
+    | '/front/photo'
+    | '/front/topic'
   fileRoutesById: FileRoutesById
 }
 
@@ -131,12 +185,22 @@ export const routeTree = rootRoute
     "/front": {
       "filePath": "front/route.tsx",
       "children": [
+        "/front/all-photo",
         "/front/live",
+        "/front/photo",
         "/front/topic"
       ]
     },
+    "/front/all-photo": {
+      "filePath": "front/all-photo.tsx",
+      "parent": "/front"
+    },
     "/front/live": {
       "filePath": "front/live.tsx",
+      "parent": "/front"
+    },
+    "/front/photo": {
+      "filePath": "front/photo.tsx",
       "parent": "/front"
     },
     "/front/topic": {
