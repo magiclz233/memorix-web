@@ -12,16 +12,24 @@
 
 import { Route as rootRoute } from './pages/__root'
 import { Route as FrontRouteImport } from './pages/front/route'
+import { Route as AdminRouteImport } from './pages/admin/route'
 import { Route as FrontTopicImport } from './pages/front/topic'
 import { Route as FrontPhotoImport } from './pages/front/photo'
 import { Route as FrontLiveImport } from './pages/front/live'
 import { Route as FrontAllPhotoImport } from './pages/front/all-photo'
+import { Route as AdminAdminImport } from './pages/admin/admin'
 
 // Create/Update Routes
 
 const FrontRouteRoute = FrontRouteImport.update({
   id: '/front',
   path: '/front',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminRouteRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -49,16 +57,36 @@ const FrontAllPhotoRoute = FrontAllPhotoImport.update({
   getParentRoute: () => FrontRouteRoute,
 } as any)
 
+const AdminAdminRoute = AdminAdminImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRoute
+    }
     '/front': {
       id: '/front'
       path: '/front'
       fullPath: '/front'
       preLoaderRoute: typeof FrontRouteImport
       parentRoute: typeof rootRoute
+    }
+    '/admin/admin': {
+      id: '/admin/admin'
+      path: '/admin'
+      fullPath: '/admin/admin'
+      preLoaderRoute: typeof AdminAdminImport
+      parentRoute: typeof AdminRouteImport
     }
     '/front/all-photo': {
       id: '/front/all-photo'
@@ -93,6 +121,18 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AdminRouteRouteChildren {
+  AdminAdminRoute: typeof AdminAdminRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminAdminRoute: AdminAdminRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 interface FrontRouteRouteChildren {
   FrontAllPhotoRoute: typeof FrontAllPhotoRoute
   FrontLiveRoute: typeof FrontLiveRoute
@@ -112,7 +152,9 @@ const FrontRouteRouteWithChildren = FrontRouteRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
+  '/admin': typeof AdminRouteRouteWithChildren
   '/front': typeof FrontRouteRouteWithChildren
+  '/admin/admin': typeof AdminAdminRoute
   '/front/all-photo': typeof FrontAllPhotoRoute
   '/front/live': typeof FrontLiveRoute
   '/front/photo': typeof FrontPhotoRoute
@@ -120,7 +162,9 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/admin': typeof AdminRouteRouteWithChildren
   '/front': typeof FrontRouteRouteWithChildren
+  '/admin/admin': typeof AdminAdminRoute
   '/front/all-photo': typeof FrontAllPhotoRoute
   '/front/live': typeof FrontLiveRoute
   '/front/photo': typeof FrontPhotoRoute
@@ -129,7 +173,9 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/front': typeof FrontRouteRouteWithChildren
+  '/admin/admin': typeof AdminAdminRoute
   '/front/all-photo': typeof FrontAllPhotoRoute
   '/front/live': typeof FrontLiveRoute
   '/front/photo': typeof FrontPhotoRoute
@@ -139,21 +185,27 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/admin'
     | '/front'
+    | '/admin/admin'
     | '/front/all-photo'
     | '/front/live'
     | '/front/photo'
     | '/front/topic'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/admin'
     | '/front'
+    | '/admin/admin'
     | '/front/all-photo'
     | '/front/live'
     | '/front/photo'
     | '/front/topic'
   id:
     | '__root__'
+    | '/admin'
     | '/front'
+    | '/admin/admin'
     | '/front/all-photo'
     | '/front/live'
     | '/front/photo'
@@ -162,10 +214,12 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   FrontRouteRoute: typeof FrontRouteRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   FrontRouteRoute: FrontRouteRouteWithChildren,
 }
 
@@ -179,7 +233,14 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/admin",
         "/front"
+      ]
+    },
+    "/admin": {
+      "filePath": "admin/route.tsx",
+      "children": [
+        "/admin/admin"
       ]
     },
     "/front": {
@@ -190,6 +251,10 @@ export const routeTree = rootRoute
         "/front/photo",
         "/front/topic"
       ]
+    },
+    "/admin/admin": {
+      "filePath": "admin/admin.tsx",
+      "parent": "/admin"
     },
     "/front/all-photo": {
       "filePath": "front/all-photo.tsx",
