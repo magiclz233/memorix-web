@@ -18,6 +18,7 @@ import { Route as FrontPhotoImport } from './pages/front/photo'
 import { Route as FrontLiveImport } from './pages/front/live'
 import { Route as FrontAllPhotoImport } from './pages/front/all-photo'
 import { Route as AdminAdminImport } from './pages/admin/admin'
+import { Route as AdminAtlasAtlasImport } from './pages/admin/atlas/atlas'
 
 // Create/Update Routes
 
@@ -60,6 +61,12 @@ const FrontAllPhotoRoute = FrontAllPhotoImport.update({
 const AdminAdminRoute = AdminAdminImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+
+const AdminAtlasAtlasRoute = AdminAtlasAtlasImport.update({
+  id: '/atlas/atlas',
+  path: '/atlas/atlas',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 
@@ -116,6 +123,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FrontTopicImport
       parentRoute: typeof FrontRouteImport
     }
+    '/admin/atlas/atlas': {
+      id: '/admin/atlas/atlas'
+      path: '/atlas/atlas'
+      fullPath: '/admin/atlas/atlas'
+      preLoaderRoute: typeof AdminAtlasAtlasImport
+      parentRoute: typeof AdminRouteImport
+    }
   }
 }
 
@@ -123,10 +137,12 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteRouteChildren {
   AdminAdminRoute: typeof AdminAdminRoute
+  AdminAtlasAtlasRoute: typeof AdminAtlasAtlasRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminAdminRoute: AdminAdminRoute,
+  AdminAtlasAtlasRoute: AdminAtlasAtlasRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
@@ -159,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/front/live': typeof FrontLiveRoute
   '/front/photo': typeof FrontPhotoRoute
   '/front/topic': typeof FrontTopicRoute
+  '/admin/atlas/atlas': typeof AdminAtlasAtlasRoute
 }
 
 export interface FileRoutesByTo {
@@ -169,6 +186,7 @@ export interface FileRoutesByTo {
   '/front/live': typeof FrontLiveRoute
   '/front/photo': typeof FrontPhotoRoute
   '/front/topic': typeof FrontTopicRoute
+  '/admin/atlas/atlas': typeof AdminAtlasAtlasRoute
 }
 
 export interface FileRoutesById {
@@ -180,6 +198,7 @@ export interface FileRoutesById {
   '/front/live': typeof FrontLiveRoute
   '/front/photo': typeof FrontPhotoRoute
   '/front/topic': typeof FrontTopicRoute
+  '/admin/atlas/atlas': typeof AdminAtlasAtlasRoute
 }
 
 export interface FileRouteTypes {
@@ -192,6 +211,7 @@ export interface FileRouteTypes {
     | '/front/live'
     | '/front/photo'
     | '/front/topic'
+    | '/admin/atlas/atlas'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -201,6 +221,7 @@ export interface FileRouteTypes {
     | '/front/live'
     | '/front/photo'
     | '/front/topic'
+    | '/admin/atlas/atlas'
   id:
     | '__root__'
     | '/admin'
@@ -210,6 +231,7 @@ export interface FileRouteTypes {
     | '/front/live'
     | '/front/photo'
     | '/front/topic'
+    | '/admin/atlas/atlas'
   fileRoutesById: FileRoutesById
 }
 
@@ -240,7 +262,8 @@ export const routeTree = rootRoute
     "/admin": {
       "filePath": "admin/route.tsx",
       "children": [
-        "/admin/admin"
+        "/admin/admin",
+        "/admin/atlas/atlas"
       ]
     },
     "/front": {
@@ -271,6 +294,10 @@ export const routeTree = rootRoute
     "/front/topic": {
       "filePath": "front/topic.tsx",
       "parent": "/front"
+    },
+    "/admin/atlas/atlas": {
+      "filePath": "admin/atlas/atlas.tsx",
+      "parent": "/admin"
     }
   }
 }
