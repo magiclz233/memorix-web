@@ -1,4 +1,3 @@
-import { Memorix } from '@/components/Memorix'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin')({
@@ -6,5 +5,5 @@ export const Route = createFileRoute('/admin')({
 })
 
 function RouteComponent() {
-  return <div> <Memorix /> <Outlet /></div>
+  return <div> <Outlet /></div>
 }
