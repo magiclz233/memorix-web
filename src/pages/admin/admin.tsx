@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 // The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work.
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -264,6 +264,7 @@ const App: React.FC = () => {
       comments: 36,
     },
   ];
+  const navigate = useNavigate();
   return (
     <div className="flex h-screen bg-gray-50">
       {/* 左侧导航栏 */}
@@ -908,12 +909,9 @@ const App: React.FC = () => {
                 <Card
                   key={album.id}
                   className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => navigate({ to: '/admin/atlas/atlas', params: { id: album.id.toString() } })}
                 >
                   <div className="relative h-48 bg-gray-100">
-                    <a
-                      href="https://readdy.ai/home/cb412d75-e2b9-46f6-ad03-3fcdd9f09acd/f01fee73-a464-4055-ab42-55eef93259d5"
-                      data-readdy="true"
-                    >
                       <img
                         src={album.cover}
                         alt={album.name}
@@ -925,7 +923,6 @@ const App: React.FC = () => {
                           {album.count} 张照片
                         </p>
                       </div>
-                    </a>
                   </div>
                   <CardFooter className="p-4 flex justify-between">
                     <div className="text-sm text-gray-500">{album.date}</div>
